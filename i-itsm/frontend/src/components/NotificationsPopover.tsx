@@ -20,7 +20,7 @@ export function NotificationsPopover() {
   }
 
   return (
-    <Popover positioning="after-end">
+    <Popover positioning="below-end">
       <PopoverTrigger disableButtonEnhancement>
         <Button appearance="subtle" icon={<Alert20Regular />} aria-label={`Notifications, ${unread} unread`}>
           Notifications {unread > 0 && <Badge size="small" color="danger" style={{ marginLeft: 6 }}>{unread}</Badge>}

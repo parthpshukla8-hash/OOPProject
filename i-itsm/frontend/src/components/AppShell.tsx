@@ -2,7 +2,7 @@ import {
   Button, Menu, MenuItem, MenuList, MenuPopover, MenuTrigger, Toast, ToastTitle, Toaster, useId, useToastController,
 } from '@fluentui/react-components'
 import {
-  Add20Regular, DataBarVertical20Regular, History20Regular, Inbox20Regular, Organization20Regular, Person20Regular,
+  Add20Regular, DataBarVertical20Regular, History20Regular, MailInbox20Regular, Organization20Regular, Person20Regular,
   Search20Regular, Settings20Regular, TextBulletListLtr20Regular, Flash20Regular,
 } from '@fluentui/react-icons'
 import { useCallback, useEffect, useMemo, useState } from 'react'
@@ -31,13 +31,13 @@ function navigationFor(role: UserRole): NavEntry[] {
       ]
     case 'TECHNICIAN':
       return [
-        { to: '/incidents', label: 'My queue', icon: <Inbox20Regular />, end: true },
+        { to: '/incidents', label: 'My queue', icon: <MailInbox20Regular />, end: true },
         { to: '/service-map', label: 'Service map', icon: <Organization20Regular /> },
         { to: '/incidents/new', label: 'Report an incident', icon: <Add20Regular /> },
       ]
     default:
       return [
-        { to: '/incidents', label: 'My incidents', icon: <Inbox20Regular />, end: true },
+        { to: '/incidents', label: 'My incidents', icon: <MailInbox20Regular />, end: true },
         { to: '/incidents/new', label: 'Report an incident', icon: <Add20Regular /> },
       ]
   }
