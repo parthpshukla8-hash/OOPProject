@@ -3,7 +3,6 @@ import type { ReactNode } from 'react'
 import { api, authToken, onUnauthorized } from '../../api/api-client'
 import type { CurrentUser } from '../../api/types'
 import { AuthContext } from './auth-context'
-import type { RegistrationDetails } from './auth-context'
 
 interface TokenResponse { token: string; user: CurrentUser }
 
@@ -27,11 +26,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     refreshUser,
     login: async (username: string, password: string) => {
       const response = await api.post<TokenResponse>('/auth/login/', { username, password })
-      authToken.set(response.token)
-      setUser(response.user)
-    },
-    register: async (details: RegistrationDetails) => {
-      const response = await api.post<TokenResponse>('/auth/register/', details)
       authToken.set(response.token)
       setUser(response.user)
     },

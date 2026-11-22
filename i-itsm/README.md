@@ -29,7 +29,10 @@ python manage.py check_sla --loop --interval 60        # optional: continuous SL
 ```
 
 Demo logins: `admin/admin123` · IT manager `manager/manager123` · technicians `t101…t104 / tech1234` · employees `e101…e104 / pass1234`.
+Employee self-registration is not available; administrators provision employee accounts. Employee accounts identify incident reporters so access to reports, updates, and notifications can be scoped correctly.
 To re-seed, delete `db.sqlite3` and the `itsm/migrations/` folder, then repeat the migrate and seed steps.
+
+API endpoints require authentication. Login issues a token that rotates on each successful login and expires after 24 hours; login is limited to 5 attempts per minute per IP. For multi-worker deployments, configure a shared Django cache so throttling is consistent across workers.
 
 For deployments, leave `DJANGO_DEBUG` unset or set it to `false`, provide a unique `DJANGO_SECRET_KEY`, and set `DJANGO_ALLOWED_HOSTS` to a comma-separated list of the deployment's hostnames. The demo seed command refuses to run when `DEBUG` is disabled.
 

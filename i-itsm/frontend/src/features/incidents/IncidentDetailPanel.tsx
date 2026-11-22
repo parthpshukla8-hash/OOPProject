@@ -307,7 +307,9 @@ function EditDialog({ incident, isStaff, onClose, onSaved }: {
           <DialogContent className={styles['incident-detail-panel__form']}>
             {error && <ErrorNotice message={error.message} />}
             <Field label="Summary"><Input value={form.title} onChange={(_, d) => set({ title: d.value })} /></Field>
-            <Field label="Details"><Textarea value={form.description} rows={4} onChange={(_, d) => set({ description: d.value })} /></Field>
+            <Field label="Details" hint={isStaff ? undefined : 'Changing the summary or details refreshes the suggested service, category, and priority.'}>
+              <Textarea value={form.description} rows={4} onChange={(_, d) => set({ description: d.value })} />
+            </Field>
             <div className={styles['incident-detail-panel__row']}>
               <Field label="Impact (1-4)"><Select value={String(form.impact)} onChange={(_, d) => set({ impact: Number(d.value) })}>{levels.map((n) => <option key={n} value={n}>{n}</option>)}</Select></Field>
               <Field label="Urgency (1-4)"><Select value={String(form.urgency)} onChange={(_, d) => set({ urgency: Number(d.value) })}>{levels.map((n) => <option key={n} value={n}>{n}</option>)}</Select></Field>
