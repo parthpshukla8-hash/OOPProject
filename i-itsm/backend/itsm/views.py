@@ -1,10 +1,10 @@
 from django.contrib.auth import authenticate
-<<<<<<< HEAD
+
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
-=======
+
 from django.db import transaction
->>>>>>> fbe5563444f9e1c67fe39867ec0e40311af7321d
+
 from rest_framework import status, viewsets
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
