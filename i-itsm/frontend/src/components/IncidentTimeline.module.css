@@ -1,0 +1,10 @@
+.incident-timeline { list-style: none; margin: 0; padding: 0 0 0 14px; border-left: 1px solid var(--colorNeutralStroke2); display: flex; flex-direction: column; gap: 14px; }
+.incident-timeline__entry { position: relative; display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 12px; font-size: 13px; }
+.incident-timeline__entry::before { content: ''; position: absolute; left: -18px; top: 6px; width: 7px; height: 7px; border-radius: 50%; background: var(--colorNeutralStroke1); }
+.incident-timeline__entry--comment::before, .incident-timeline__entry--question::before { background: var(--colorBrandForeground1); }
+.incident-timeline__entry--event { color: var(--colorNeutralForeground3); }
+.incident-timeline__entry--comment, .incident-timeline__entry--question, .incident-timeline__entry--internal { color: var(--colorNeutralForeground1); }
+.incident-timeline__entry--internal .incident-timeline__text { background: var(--colorNeutralBackground3); padding: 6px 10px; border-radius: 4px; }
+.incident-timeline__time { color: var(--colorNeutralForeground3); font-size: 12px; font-variant-numeric: tabular-nums; padding-top: 1px; }
+.incident-timeline__text { line-height: 1.45; overflow-wrap: anywhere; }
+.incident-timeline__tag { margin-left: 6px; font-size: 11px; color: var(--colorNeutralForeground3); }

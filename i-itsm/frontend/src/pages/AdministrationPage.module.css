@@ -1,0 +1,13 @@
+.administration-page { padding: 32px 40px 56px; max-width: 960px; display: flex; flex-direction: column; gap: 16px; }
+.administration-page h1 { margin: 0; font-size: 24px; font-weight: 600; }
+.administration-page h2 { margin: 16px 0 0; font-size: 14px; font-weight: 600; }
+.administration-page__panel { display: flex; flex-direction: column; gap: 16px; align-items: flex-start; padding-top: 8px; }
+.administration-page__panel > table { width: 100%; }
+.administration-page__columns { display: flex; flex-direction: column; gap: 28px; }
+.administration-page__form { display: flex; flex-direction: column; gap: 10px; max-width: 480px; width: 100%; align-items: flex-start; }
+.administration-page__form > * { width: 100%; }
+.administration-page__form > button { width: auto; }
+.administration-page__row { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
+.administration-page__muted { font-size: 12px; color: var(--colorNeutralForeground3); }
+.administration-page__list { list-style: none; margin: 0; padding: 0; width: 100%; max-width: 560px; }
+.administration-page__list li { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--colorNeutralStroke3); font-size: 14px; }

@@ -1,0 +1,4 @@
+.audit-log-page { padding: 32px 40px 56px; display: flex; flex-direction: column; gap: 16px; }
+.audit-log-page h1 { margin: 0; font-size: 24px; font-weight: 600; }
+.audit-log-page__filters { display: flex; gap: 16px; flex-wrap: wrap; }
+.audit-log-page__empty { color: var(--colorNeutralForeground3); font-size: 14px; }

@@ -1,0 +1,14 @@
+.report-incident-page { display: grid; grid-template-columns: minmax(0, 560px) minmax(280px, 380px); gap: 48px; padding: 32px 40px; max-width: 1100px; }
+.report-incident-page__form { display: flex; flex-direction: column; gap: 16px; }
+.report-incident-page__heading { margin: 0; font-size: 24px; font-weight: 600; }
+.report-incident-page__lead { margin: 0 0 4px; color: var(--colorNeutralForeground3); max-width: 60ch; }
+.report-incident-page__actions { display: flex; gap: 8px; margin-top: 4px; }
+.report-incident-page__context { position: sticky; top: 32px; align-self: start; display: flex; flex-direction: column; gap: 24px; }
+.report-incident-page__placeholder { margin: 40px 0 0; color: var(--colorNeutralForeground3); font-size: 13px; line-height: 1.5; max-width: 40ch; }
+.report-incident-page__block { display: flex; flex-direction: column; gap: 10px; border-left: 2px solid var(--colorBrandStroke1); padding-left: 14px; }
+.report-incident-page__block h2 { margin: 0; font-size: 14px; font-weight: 600; }
+.report-incident-page__similar { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; font-size: 14px; }
+.report-incident-page__similar-title { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.report-incident-page__meta { font-size: 12px; color: var(--colorNeutralForeground3); }
+.report-incident-page__explain { margin: 0; font-size: 12px; color: var(--colorNeutralForeground3); line-height: 1.5; }
+@media (max-width: 900px) { .report-incident-page { grid-template-columns: 1fr; padding: 20px; gap: 24px; } .report-incident-page__context { position: static; } }

@@ -1,0 +1,6 @@
+html, body, #root { height: 100%; margin: 0; }
+body { font-synthesis: none; -webkit-font-smoothing: antialiased; }
+* { box-sizing: border-box; }
+button { font-family: inherit; }
+:focus-visible { outline: 2px solid var(--colorStrokeFocus2); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; } }

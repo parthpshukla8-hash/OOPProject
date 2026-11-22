@@ -1,0 +1,11 @@
+.sla-meter { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.sla-meter__track { position: relative; flex: 1; height: 4px; border-radius: 2px; background: var(--colorNeutralBackground5); }
+.sla-meter--compact .sla-meter__track { width: 56px; flex: none; }
+.sla-meter__fill { height: 100%; border-radius: 2px; }
+.sla-meter__fill--on-track { background: var(--color-sla-on-track); }
+.sla-meter__fill--at-risk { background: var(--color-sla-at-risk); }
+.sla-meter__fill--breached { background: var(--color-sla-breached); }
+.sla-meter__fill--met { background: var(--color-sla-met); }
+.sla-meter__warning-tick { position: absolute; left: 80%; top: -3px; bottom: -3px; width: 1px; background: var(--colorNeutralForeground3); opacity: 0.6; }
+.sla-meter__label { font-size: 12px; color: var(--colorNeutralForeground3); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.sla-meter__label--breached { color: var(--color-sla-breached); font-weight: 600; }
