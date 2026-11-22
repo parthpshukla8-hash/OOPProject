@@ -1,11 +1,11 @@
 import { createDarkTheme, createLightTheme } from '@fluentui/react-components'
 import type { BrandVariants, Theme } from '@fluentui/react-components'
 
-// A single harbour-blue ramp. The base brand colour sits at step 80.
-const harbourBlue: BrandVariants = {
-  10: '#03121F', 20: '#072035', 30: '#0B2B49', 40: '#0F365A', 50: '#134067',
-  60: '#174974', 70: '#1B5282', 80: '#1F5C8B', 90: '#3F7099', 100: '#5A84AA',
-  110: '#7597BA', 120: '#90AAC9', 130: '#ABBDD7', 140: '#C5D0E3', 150: '#DEE4EF', 160: '#F1F4F9',
+// Fluent UI 9 blue brand ramp.
+const fluentBlue: BrandVariants = {
+  10: '#061724', 20: '#082338', 30: '#0A2E4A', 40: '#0C3B5E', 50: '#0C5078',
+  60: '#0E63A9', 70: '#115EA3', 80: '#0F6CBD', 90: '#2886D9', 100: '#479EF5',
+  110: '#62ABF5', 120: '#77B7F7', 130: '#96C6FA', 140: '#B4D6FA', 150: '#CFE4FA', 160: '#EBF3FC',
 }
 
 const typography = {
@@ -14,15 +14,11 @@ const typography = {
 }
 
 export const lightTheme: Theme = {
-  ...createLightTheme(harbourBlue),
+  ...createLightTheme(fluentBlue),
   ...typography,
-  colorNeutralBackground2: '#F6F7F9',
-  colorNeutralBackground3: '#EFF1F4',
 }
 
 export const darkTheme: Theme = {
-  ...createDarkTheme(harbourBlue),
+  ...createDarkTheme(fluentBlue),
   ...typography,
-  colorBrandForeground1: '#7597BA',
-  colorBrandForeground2: '#90AAC9',
 }

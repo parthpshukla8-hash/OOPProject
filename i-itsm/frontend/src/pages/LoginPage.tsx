@@ -1,4 +1,5 @@
 import { Button, Field, Input } from '@fluentui/react-components'
+import { Eye20Regular, EyeOff20Regular } from '@fluentui/react-icons'
 import { useState } from 'react'
 import type { ApiError } from '../api/api-client'
 import { ErrorNotice } from '../components/ErrorNotice'
@@ -17,6 +18,7 @@ export function LoginPage() {
   const [form, setForm] = useState({ username: '', password: '', firstName: '', lastName: '', email: '' })
   const [error, setError] = useState<ApiError | null>(null)
   const [isBusy, setIsBusy] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
   const set = (patch: Partial<typeof form>) => setForm((current) => ({ ...current, ...patch }))
 
   const submit = async (username = form.username, password = form.password) => {
@@ -41,14 +43,30 @@ export function LoginPage() {
           <Field label="Username"><Input value={form.username} autoComplete="username" onChange={(_, d) => set({ username: d.value })} /></Field>
           {isRegistering && <Field label="Work email"><Input type="email" value={form.email} onChange={(_, d) => set({ email: d.value })} /></Field>}
           <Field label="Password" hint={isRegistering ? 'At least 8 characters, not a common password.' : undefined}>
-            <Input type="password" value={form.password} autoComplete={isRegistering ? 'new-password' : 'current-password'} onChange={(_, d) => set({ password: d.value })} />
+            <Input
+              type={showPassword ? 'text' : 'password'}
+              value={form.password}
+              autoComplete={isRegistering ? 'new-password' : 'current-password'}
+              onChange={(_, d) => set({ password: d.value })}
+              contentAfter={
+                <Button
+                  type="button"
+                  size="small"
+                  appearance="transparent"
+                  icon={showPassword ? <EyeOff20Regular /> : <Eye20Regular />}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  aria-pressed={showPassword}
+                  onClick={() => setShowPassword((visible) => !visible)}
+                />
+              }
+            />
           </Field>
           {error && <ErrorNotice message={error.message} />}
           <Button type="submit" appearance="primary" disabled={isBusy || !form.username || !form.password}>
             {isRegistering ? 'Create account' : 'Sign in'}
           </Button>
         </form>
-        <Button appearance="transparent" onClick={() => { setIsRegistering(!isRegistering); setError(null) }}>
+        <Button appearance="transparent" onClick={() => { setIsRegistering(!isRegistering); setShowPassword(false); setError(null) }}>
           {isRegistering ? 'I already have an account' : 'New here? Create an account'}
         </Button>
         {!isRegistering && (
