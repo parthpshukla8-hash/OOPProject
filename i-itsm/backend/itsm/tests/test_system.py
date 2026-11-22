@@ -1,7 +1,9 @@
 from datetime import timedelta
 
+from django.core.cache import cache
 from django.test import TestCase
 from django.utils import timezone
+from rest_framework.authtoken.models import Token
 from rest_framework.test import APIClient
 
 from itsm import services
@@ -126,6 +128,25 @@ class LifecycleTests(WorldTestCase):
         technician_keys = {a["key"] for a in services.available_actions(incident, incident.assignee)}
         self.assertEqual(technician_keys, {"acknowledge"})
         self.assertNotIn("close", technician_keys)
+
+
+class IncidentUpdateTests(WorldTestCase):
+    def test_employee_edit_reclassifies_text_and_recalculates_priority(self):
+        incident = self.report(title="General help request", description="Need help with general software",
+                               impact=2, urgency=2, affected_users=1, service=self.general)
+        self.assertEqual(incident.priority, "P4")
+
+        services.update_incident(incident, self.employee, {
+            "title": "Payment application unavailable",
+            "description": "Customers cannot complete payment transactions at checkout.",
+        })
+        incident.refresh_from_db()
+
+        self.assertEqual(incident.service, self.payment)
+        self.assertEqual(incident.category, self.application_category)
+        self.assertEqual(incident.priority, "P3")
+        self.assertIn("Updated details:", AuditEvent.objects.get(
+            incident=incident, action="PriorityChanged").description)
 
 
 class AssignmentTests(WorldTestCase):
@@ -302,12 +323,49 @@ class SecurityTests(WorldTestCase):
         response = self.client.post("/api/auth/login/", {"username": "e101", "password": "wrong"}, format="json")
         self.assertEqual(response.status_code, 401)
 
+    def test_employee_self_registration_is_not_available(self):
+        response = self.client.post("/api/auth/register/", {"username": "newperson", "password": "StrongPass123!"}, format="json")
+        self.assertEqual(response.status_code, 404)
+
     def test_login_returns_a_token_and_role(self):
         self.employee.set_password("pass1234")
         self.employee.save()
         response = self.client.post("/api/auth/login/", {"username": "e101", "password": "pass1234"}, format="json")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data["user"]["role"], "EMPLOYEE")
+
+    def test_login_rotates_the_previous_token(self):
+        self.employee.set_password("pass1234")
+        self.employee.save()
+        first = self.client.post("/api/auth/login/", {"username": "e101", "password": "pass1234"}, format="json")
+        second = self.client.post("/api/auth/login/", {"username": "e101", "password": "pass1234"}, format="json")
+        self.assertNotEqual(first.data["token"], second.data["token"])
+
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {first.data['token']}")
+        self.assertEqual(self.client.get("/api/auth/me/").status_code, 401)
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {second.data['token']}")
+        self.assertEqual(self.client.get("/api/auth/me/").status_code, 200)
+
+    def test_expired_tokens_are_rejected_and_deleted(self):
+        token = Token.objects.create(user=self.employee)
+        Token.objects.filter(pk=token.key).update(created=timezone.now() - timedelta(hours=24, seconds=1))
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {token.key}")
+
+        response = self.client.get("/api/auth/me/")
+
+        self.assertEqual(response.status_code, 401)
+        self.assertFalse(Token.objects.filter(pk=token.key).exists())
+
+    def test_login_is_limited_to_five_attempts_per_minute(self):
+        cache.clear()
+        try:
+            responses = [
+                self.client.post("/api/auth/login/", {"username": "e101", "password": "wrong"}, format="json")
+                for _ in range(6)
+            ]
+            self.assertEqual([response.status_code for response in responses], [401] * 5 + [429])
+        finally:
+            cache.clear()
 
     def test_api_requires_authentication(self):
         self.assertEqual(self.client.get("/api/incidents/").status_code, 401)
@@ -344,7 +402,7 @@ class SecurityTests(WorldTestCase):
         self.assertEqual(response.status_code, 400)
         self.assertIn("detail", response.data)
 
-    def test_weak_passwords_are_rejected_at_registration(self):
+    def test_user_factory_rejects_weak_passwords(self):
         with self.assertRaises(InvalidUserInput):
             UserFactory.create("newperson", "123")
 

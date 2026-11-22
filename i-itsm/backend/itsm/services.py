@@ -140,7 +140,7 @@ def _publish(name, incident, actor=None, previous="", new="", description="", **
     event_bus.publish(DomainEvent(name, incident, actor, previous, new or incident.status, description, payload))
 
 
-def _refresh_priority(incident: Incident, actor: User | None) -> bool:
+def _refresh_priority(incident: Incident, actor: User | None, change_description: str = "") -> bool:
     """Recalculate priority and SLA deadlines. Returns True if the priority band changed."""
     previous = incident.priority
     result = calculate_incident_priority(incident.impact, incident.urgency, incident.service, incident.affected_users)
@@ -149,8 +149,9 @@ def _refresh_priority(incident: Incident, actor: User | None) -> bool:
     apply_sla_deadlines(incident)
     incident.save()
     if previous != incident.priority:
+        detail = f" Updated details: {change_description}." if change_description else ""
         _publish("PriorityChanged", incident, actor, description=f"Priority changed from {previous} to "
-                 f"{incident.priority}. {'; '.join(result.rationale)}")
+                 f"{incident.priority}. {'; '.join(result.rationale)}.{detail}")
         return True
     return False
 
@@ -244,6 +245,7 @@ def update_incident(incident: Incident, actor: User, data: dict) -> Incident:
     if is_staff:
         allowed |= {"category", "service"}
     changes = []
+    text_changed = False
     for field in allowed & data.keys():
         value = data[field]
         if field in ("impact", "urgency") and not (isinstance(value, int) and 1 <= value <= 4):
@@ -266,9 +268,17 @@ def update_incident(incident: Incident, actor: User, data: dict) -> Incident:
         if getattr(incident, field) != value:
             changes.append(f"{field.replace('_', ' ')} changed from {getattr(incident, field)} to {value}")
             setattr(incident, field, value)
+            text_changed |= field in ("title", "description")
+    if text_changed and not is_staff:
+        service, category = IncidentFactory.resolve_classification(f"{incident.title} {incident.description}")
+        for field, value in (("service", service), ("category", category)):
+            previous = getattr(incident, field)
+            if previous != value:
+                changes.append(f"{field} automatically changed from {previous} to {value}")
+                setattr(incident, field, value)
     if not changes:
         return incident
-    priority_changed = _refresh_priority(incident, actor)
+    priority_changed = _refresh_priority(incident, actor, "; ".join(changes))
     if not priority_changed:
         _publish("IncidentUpdated", incident, actor, description="; ".join(changes))
     return incident

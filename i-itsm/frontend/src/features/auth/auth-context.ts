@@ -1,15 +1,10 @@
 import { createContext, useContext } from 'react'
 import type { CurrentUser } from '../../api/types'
 
-export interface RegistrationDetails {
-  username: string; password: string; firstName: string; lastName: string; email: string
-}
-
 export interface AuthState {
   user: CurrentUser | null
   isLoading: boolean
   login: (username: string, password: string) => Promise<void>
-  register: (details: RegistrationDetails) => Promise<void>
   logout: () => Promise<void>
   refreshUser: () => Promise<void>
 }
