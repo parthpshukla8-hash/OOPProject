@@ -1,16 +1,20 @@
 /* Tokens that carry meaning (priority, SLA, health). Named by role, not by colour. */
 :root {
-  --color-priority-critical: #b42318;
-  --color-priority-high: #b54708;
-  --color-priority-medium: #3b6a94;
-  --color-priority-low: #8a96a4;
-  --color-sla-on-track: #2e7d5b;
-  --color-sla-at-risk: #b54708;
-  --color-sla-breached: #b42318;
-  --color-sla-met: #2e7d5b;
-  --color-health-healthy: #2e7d5b;
-  --color-health-degraded: #b54708;
-  --color-health-down: #b42318;
+  --color-institute-indigo: #2b2b88;
+  --color-institute-gold: #b78a2d;
+  --color-institute-cyan: #5ccae8;
+  --color-institute-red: #cf2027;
+  --color-priority-critical: #cf2027;
+  --color-priority-high: #b78a2d;
+  --color-priority-medium: #2686a8;
+  --color-priority-low: #686b9f;
+  --color-sla-on-track: #2686a8;
+  --color-sla-at-risk: #b78a2d;
+  --color-sla-breached: #cf2027;
+  --color-sla-met: #2686a8;
+  --color-health-healthy: #2686a8;
+  --color-health-degraded: #b78a2d;
+  --color-health-down: #cf2027;
   --space-1: 4px;
   --space-2: 8px;
   --space-3: 12px;
@@ -20,15 +24,15 @@
 }
 
 [data-theme='dark'] {
-  --color-priority-critical: #f97066;
-  --color-priority-high: #f79009;
-  --color-priority-medium: #7fa6cc;
-  --color-priority-low: #8996a4;
-  --color-sla-on-track: #5fbf94;
-  --color-sla-at-risk: #f79009;
-  --color-sla-breached: #f97066;
-  --color-sla-met: #5fbf94;
-  --color-health-healthy: #5fbf94;
-  --color-health-degraded: #f79009;
-  --color-health-down: #f97066;
+  --color-priority-critical: #ef4d55;
+  --color-priority-high: #ffe275;
+  --color-priority-medium: #5ccae8;
+  --color-priority-low: #a8a8cb;
+  --color-sla-on-track: #5ccae8;
+  --color-sla-at-risk: #ffe275;
+  --color-sla-breached: #ef4d55;
+  --color-sla-met: #5ccae8;
+  --color-health-healthy: #5ccae8;
+  --color-health-degraded: #ffe275;
+  --color-health-down: #ef4d55;
 }
