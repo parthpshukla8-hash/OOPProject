@@ -6,7 +6,7 @@ import {
   Search20Regular, Settings20Regular, TextBulletListLtr20Regular, Flash20Regular,
 } from '@fluentui/react-icons'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import type { UserRole } from '../api/types'
 import { api } from '../api/api-client'
 import { useAuth } from '../features/auth/auth-context'
@@ -47,6 +47,7 @@ interface AppShellProps { themeMode: 'light' | 'dark'; onToggleTheme: () => void
 
 export function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
   const { user, logout, refreshUser } = useAuth()
+  const navigate = useNavigate()
   const [paletteOpen, setPaletteOpen] = useState(false)
   const toasterId = useId('toaster')
   const { dispatchToast } = useToastController(toasterId)
@@ -105,6 +106,7 @@ export function AppShell({ themeMode, onToggleTheme }: AppShellProps) {
                       notify('info', user.isAvailable ? 'You will not receive new assignments' : 'You can receive assignments again')
                     }}>{user.isAvailable ? 'Mark myself unavailable' : 'Mark myself available'}</MenuItem>
                   )}
+                  <MenuItem onClick={() => navigate('/change-password')}>Change password</MenuItem>
                   <MenuItem onClick={onToggleTheme}>{themeMode === 'light' ? 'Dark theme' : 'Light theme'}</MenuItem>
                   <MenuItem onClick={() => logout()}>Sign out</MenuItem>
                 </MenuList>

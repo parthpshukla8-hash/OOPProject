@@ -40,6 +40,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       authToken.clear()
       setUser(null)
     },
+    changePassword: async (oldPassword: string, newPassword: string) => {
+      await api.post('/auth/change-password/', { oldPassword, newPassword })
+      // Token will be invalidated by backend, clear local state
+      authToken.clear()
+      setUser(null)
+    },
   }), [user, isLoading, refreshUser])
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
