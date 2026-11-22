@@ -170,10 +170,10 @@ def create_incident(reporter: User, title: str, description: str, impact: int, u
 
     incident.save()
     apply_sla_deadlines(incident)
-    incident.save(update_fields=["response_due_at", "resolution_due_at"])
+    # incident.save(update_fields=["response_due_at", "resolution_due_at"])
     _publish("IncidentReported", incident, reporter, "", S.NEW,
              f"{incident.code} reported by {reporter.display_name}: {incident.title}")
-
+    
     previous = transition(incident, S.CLASSIFIED)
     incident.save()
     _publish("IncidentClassified", incident, None, previous, S.CLASSIFIED,

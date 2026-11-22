@@ -1,7 +1,9 @@
+import os
 import random
 from datetime import timedelta
 
-from django.core.management.base import BaseCommand
+from django.conf import settings
+from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 from django.utils import timezone
 
@@ -89,8 +91,16 @@ EMPLOYEES = [("e101", "Kavya", "Reddy"), ("e102", "Imran", "Shaikh"), ("e103", "
 class Command(BaseCommand):
     help = "Load demo users, services, SLA policies, dependencies, history and a few open incidents."
 
-    @transaction.atomic
     def handle(self, *args, **options):
+        if not settings.DEBUG:
+            raise CommandError("The demo seed command is disabled when DEBUG=False.")
+        if os.environ.get("ITSM_ALLOW_DEMO_SEED") != "1":
+            raise CommandError("Set ITSM_ALLOW_DEMO_SEED=1 to seed a disposable local demo environment.")
+
+        self._seed()
+
+    @transaction.atomic
+    def _seed(self):
         if User.objects.exists():
             self.stdout.write("Data already present. Delete db.sqlite3 and migrate again to reseed.")
             return

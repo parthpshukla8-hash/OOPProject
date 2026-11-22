@@ -211,6 +211,7 @@ class Incident(models.Model):
 
     def __str__(self):
         return f"{self.code} {self.title}"
+    
 
 
 class IncidentComment(models.Model):

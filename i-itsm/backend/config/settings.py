@@ -1,11 +1,30 @@
+import os
 from pathlib import Path
+
+from django.core.exceptions import ImproperlyConfigured
+from django.core.management.utils import get_random_secret_key
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Course project defaults. For a real deployment read these from the environment.
-SECRET_KEY = "dev-only-change-me-before-deploying"
-DEBUG = True
-ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+DEBUG = os.environ.get("DJANGO_DEBUG", "").strip().lower() in {"1", "true", "yes", "on"}
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
+if not SECRET_KEY:
+    if not DEBUG:
+        raise ImproperlyConfigured("DJANGO_SECRET_KEY must be set when DEBUG is disabled.")
+    SECRET_KEY = get_random_secret_key()
+
+ALLOWED_HOSTS = [host.strip() for host in os.environ.get("DJANGO_ALLOWED_HOSTS", "").split(",") if host.strip()]
+if not ALLOWED_HOSTS:
+    if not DEBUG:
+        raise ImproperlyConfigured("DJANGO_ALLOWED_HOSTS must be set when DEBUG is disabled.")
+    ALLOWED_HOSTS = ["localhost", "127.0.0.1", "[::1]"]
+
+SECURE_SSL_REDIRECT = not DEBUG
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
+SECURE_HSTS_SECONDS = 31_536_000 if not DEBUG else 0
+SECURE_HSTS_INCLUDE_SUBDOMAINS = not DEBUG
+SECURE_HSTS_PRELOAD = not DEBUG
 
 INSTALLED_APPS = [
     "django.contrib.admin",
