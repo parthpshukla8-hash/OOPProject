@@ -3,6 +3,7 @@
 **Stack:** React 18 + TypeScript (Vite) + Fluent UI v9 · Django 5 + Django REST Framework · SQLite · token auth
 >[!IMPORTANT]
 > We have added the video in the GitHub repo since the video was large for the GForm and not getting uploaded in the GDrive folder too
+>[Video]{https://drive.google.com/file/d/1iuOqfiAyCq5AyC0TFkP3kqddb3lUrART/view}
 
 ## Run it
 
