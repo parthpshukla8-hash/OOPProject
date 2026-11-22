@@ -1,11 +1,16 @@
 from django.contrib.auth import authenticate
+<<<<<<< HEAD
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
+=======
+from django.db import transaction
+>>>>>>> fbe5563444f9e1c67fe39867ec0e40311af7321d
 from rest_framework import status, viewsets
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
+from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.views import APIView
 
 from . import reports, services
@@ -23,8 +28,10 @@ from .serializers import (AuditEventSerializer, CategorySerializer, IncidentDeta
                           SlaPolicySerializer, STRATEGY_CATALOG, UserSerializer)
 
 
+@transaction.atomic
 def _token_response(user, http_status=status.HTTP_200_OK):
-    token, _ = Token.objects.get_or_create(user=user)
+    Token.objects.filter(user=user).delete()
+    token = Token.objects.create(user=user)
     return Response({"token": token.key, "user": UserSerializer(user).data}, status=http_status)
 
 
@@ -33,26 +40,14 @@ def _token_response(user, http_status=status.HTTP_200_OK):
 class LoginView(APIView):
     permission_classes = [AllowAny]
     authentication_classes: list = []
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = "login"
 
     def post(self, request):
         user = authenticate(username=request.data.get("username", ""), password=request.data.get("password", ""))
         if user is None:
             raise InvalidCredentials()
         return _token_response(user)
-
-
-class RegisterView(APIView):
-    """Self-registration is for employees only. Staff accounts are created by administrators."""
-    permission_classes = [AllowAny]
-    authentication_classes: list = []
-
-    def post(self, request):
-        data = request.data
-        user = UserFactory.create(
-            username=data.get("username", ""), password=data.get("password", ""), role=User.Role.EMPLOYEE,
-            first_name=data.get("first_name", ""), last_name=data.get("last_name", ""),
-            email=data.get("email", ""), phone=data.get("phone", ""))
-        return _token_response(user, status.HTTP_201_CREATED)
 
 
 class LogoutView(APIView):

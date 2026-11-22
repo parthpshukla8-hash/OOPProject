@@ -63,8 +63,7 @@ class IncidentFactory:
             raise InvalidUserInput("The number of affected users must be at least 1.")
 
         text = f"{title} {description}"
-        service = cls._resolve_service(service_id, text)
-        category = cls._resolve_category(category_id, text, service)
+        service, category = cls.resolve_classification(text, service_id, category_id)
         result = calculate_incident_priority(impact, urgency, service, affected_users)
         find_sla_policy(result.priority, service)  # fail early if no SLA is configured
 
@@ -72,6 +71,13 @@ class IncidentFactory:
                         category=category, impact=impact, urgency=urgency, affected_users=affected_users,
                         priority=result.priority, priority_score=result.score,
                         priority_rationale=list(result.rationale))
+
+    @classmethod
+    def resolve_classification(cls, text: str, service_id: int | None = None,
+                               category_id: int | None = None) -> tuple[Service, Category | None]:
+        service = cls._resolve_service(service_id, text)
+        category = cls._resolve_category(category_id, text, service)
+        return service, category
 
     @staticmethod
     def _resolve_service(service_id, text) -> Service:
