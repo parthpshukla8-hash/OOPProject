@@ -12,6 +12,7 @@ export interface AuthState {
   register: (details: RegistrationDetails) => Promise<void>
   logout: () => Promise<void>
   refreshUser: () => Promise<void>
+  changePassword: (oldPassword: string, newPassword: string) => Promise<void>
 }
 
 export const AuthContext = createContext<AuthState | null>(null)

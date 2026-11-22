@@ -18,6 +18,7 @@ urlpatterns = [
     path("auth/register/", views.RegisterView.as_view()),
     path("auth/logout/", views.LogoutView.as_view()),
     path("auth/me/", views.MeView.as_view()),
+    path("auth/change-password/", views.ChangePasswordView.as_view()),
     path("technicians/", views.TechnicianWorkloadView.as_view()),
     path("settings/", views.SystemSettingsView.as_view()),
     path("reports/", views.ReportView.as_view()),

@@ -1,4 +1,6 @@
 from django.contrib.auth import authenticate
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 from rest_framework import status, viewsets
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
@@ -69,6 +71,32 @@ class MeView(APIView):
             request.user.is_available = bool(request.data["is_available"])
             request.user.save(update_fields=["is_available"])
         return Response(UserSerializer(request.user).data)
+
+
+class ChangePasswordView(APIView):
+    """Allow authenticated users to change their own password."""
+
+    def post(self, request):
+        user = request.user
+        old_password = request.data.get("old_password", "")
+        new_password = request.data.get("new_password", "")
+
+        if not user.check_password(old_password):
+            raise InvalidCredentials("Current password is incorrect.")
+
+        try:
+            validate_password(new_password, user)
+        except ValidationError as error:
+            raise InvalidUserInput(" ".join(error.messages))
+
+        user.set_password(new_password)
+        user.save(update_fields=["password"])
+
+        # Invalidate existing tokens (force re-login on other devices)
+        Token.objects.filter(user=user).delete()
+
+        return Response({"detail": "Password changed. Please sign in again."},
+                       status=status.HTTP_200_OK)
 
 
 # ------------------------------------------------------------------ incidents

@@ -360,3 +360,32 @@ class SecurityTests(WorldTestCase):
         user = UserFactory.create("freshuser", "a-long-Safe-passphrase-42")
         self.assertNotEqual(user.password, "a-long-Safe-passphrase-42")
         self.assertTrue(user.check_password("a-long-Safe-passphrase-42"))
+
+    def _login_employee(self):
+        self.employee.set_password("x")
+        self.employee.save()
+        response = self.client.post("/api/auth/login/", {"username": "e101", "password": "x"}, format="json")
+        token = response.data["token"]
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {token}")
+        return token
+
+    def test_password_change_requires_correct_old_password(self):
+        self._login_employee()
+        response = self.client.post("/api/auth/change-password/",
+                                    {"old_password": "wrong", "new_password": "NewPass123!"}, format="json")
+        self.assertEqual(response.status_code, 401)
+
+    def test_password_change_rejects_weak_passwords(self):
+        self._login_employee()
+        response = self.client.post("/api/auth/change-password/",
+                                    {"old_password": "x", "new_password": "123"}, format="json")
+        self.assertEqual(response.status_code, 400)
+
+    def test_password_change_invalidates_token(self):
+        self._login_employee()
+        response = self.client.post("/api/auth/change-password/",
+                                    {"old_password": "x", "new_password": "NewPass123!"}, format="json")
+        self.assertEqual(response.status_code, 200)
+        # Old token should no longer work
+        response = self.client.get("/api/auth/me/")
+        self.assertEqual(response.status_code, 401)

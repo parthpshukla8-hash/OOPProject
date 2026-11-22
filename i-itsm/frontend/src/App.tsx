@@ -8,6 +8,7 @@ import { AuthProvider } from './features/auth/AuthProvider'
 import { useAuth } from './features/auth/auth-context'
 import { AdministrationPage } from './pages/AdministrationPage'
 import { AuditLogPage } from './pages/AuditLogPage'
+import { ChangePasswordPage } from './pages/ChangePasswordPage'
 import { IncidentWorkspacePage } from './pages/IncidentWorkspacePage'
 import { LoginPage } from './pages/LoginPage'
 import { ReportIncidentPage } from './pages/ReportIncidentPage'
@@ -44,6 +45,7 @@ function AppRoutes({ themeMode, onToggleTheme }: { themeMode: ThemeMode; onToggl
         <Route path="/reports" element={<RequireRole roles={['ADMINISTRATOR']}><ReportsPage /></RequireRole>} />
         <Route path="/administration" element={<RequireRole roles={['ADMINISTRATOR']}><AdministrationPage /></RequireRole>} />
         <Route path="/audit-log" element={<RequireRole roles={['ADMINISTRATOR']}><AuditLogPage /></RequireRole>} />
+        <Route path="/change-password" element={<ChangePasswordPage />} />
         <Route path="*" element={<Navigate to={home} replace />} />
       </Route>
     </Routes>
