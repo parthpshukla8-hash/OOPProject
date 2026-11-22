@@ -1,8 +1,7 @@
 # Project Naming Conventions
 
 **Status:** Working standard for new and revised project work  
-**Applies to:** The I-ITSM project, including its frontend and any future domain, API, or persistence code  
-**Companion document:** [Project overview](./PROJECT_OVERVIEW.md)
+**Applies to:** The I-ITSM project, including its frontend and any future domain, API, or persistence code
 
 This document defines how to choose one clear, consistent name for each project concept. Apply it to new work first. Rename existing files or symbols only as part of a deliberate change that updates every import, reference, test, and relevant document.
 
@@ -185,4 +184,4 @@ Before adding a new name:
 
 ## 7. Updating this standard
 
-Change this document when the project makes a durable naming decision or adds a technology with naming rules not covered here. Keep the examples consistent with the rule being introduced. Record unsettled choices as open decisions in the [project overview](./PROJECT_OVERVIEW.md), rather than presenting guesses as established facts.
+Change this document when the project makes a durable naming decision or adds a technology with naming rules not covered here. Keep the examples consistent with the rule being introduced. Record unsettled choices as open decisions in the [project overview], rather than presenting guesses as established facts.
