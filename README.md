@@ -1,6 +1,8 @@
 # I-ITSM: Intelligent IT Service Management & Incident Resolution System
 
 **Stack:** React 18 + TypeScript (Vite) + Fluent UI v9 · Django 5 + Django REST Framework · SQLite · token auth
+>[!IMPORTANT]
+> We have added the video in the GitHub repo since the video was large for the GForm and not getting uploaded in the GDrive folder too
 
 ## Run it
 
