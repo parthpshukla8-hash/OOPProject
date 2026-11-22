@@ -5,13 +5,16 @@
 ## Run it
 
 ```bash
+# Local demo only. Do not enable DEBUG or seed demo accounts in a deployment.
+export DJANGO_DEBUG=true
+
 # Backend
 cd backend
 python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 python manage.py makemigrations itsm                   # custom user model: create migrations first
 python manage.py migrate
-python manage.py seed                                  # demo users, services, SLA policies, history, 3 open incidents
+ITSM_ALLOW_DEMO_SEED=1 python manage.py seed           # disposable demo users, services, SLA policies and incidents
 python manage.py runserver                             # http://127.0.0.1:8000
 
 # Frontend (second terminal)
@@ -27,6 +30,8 @@ python manage.py check_sla --loop --interval 60        # optional: continuous SL
 
 Demo logins: `admin/admin123` · IT manager `manager/manager123` · technicians `t101…t104 / tech1234` · employees `e101…e104 / pass1234`.
 To re-seed, delete `db.sqlite3` and the `itsm/migrations/` folder, then repeat the migrate and seed steps.
+
+For deployments, leave `DJANGO_DEBUG` unset or set it to `false`, provide a unique `DJANGO_SECRET_KEY`, and set `DJANGO_ALLOWED_HOSTS` to a comma-separated list of the deployment's hostnames. The demo seed command refuses to run when `DEBUG` is disabled.
 
 ## What is new in this version
 
@@ -103,8 +108,3 @@ Follows `NamingConvention.pdf`: `incident`, `technician`, `service` used everywh
 - The SLA clock does not pause while waiting for the reporter.
 - SMS and email are simulated.
 - Created in an environment without Django or npm access: the backend was compile-checked and the similarity engine unit-tested, but the Django test suite and the front-end build have **not been run yet**. Run `python manage.py test itsm` and `npm run build` first and send me any failures.
-
-## Demo workflows
-1. **Report, prioritise, assign, notify:** sign in as `e101`, start typing "Payment application unavailable, nobody can complete transactions" and watch the right column; choose "Everyone in the company" and "Work is blocked right now". Sign in as `admin` and open Administration > Outbox.
-2. **Investigate, resolve, verify:** as the assigned technician: Acknowledge, Start investigating, Mark resolved (use a suggested fix). As `e101`: *It works now* and rate it. Close as the technician. Show the audit log as `admin`.
-3. **Duplicates, correlation, escalation:** report similar payment problems as `e102` and `e103` (the form offers *I'm affected too*), then check Situation. Leave a P1 unacknowledged and run `python manage.py check_sla` to see the breach and escalation levels.

@@ -90,7 +90,7 @@ class ResolvedState(IncidentState):
 
 class VerifiedState(IncidentState):
     status, label = S.VERIFIED, "Verified"
-    next_statuses = (S.CLOSED, S.IN_PROGRESS)
+    next_statuses = (S.CLOSED, S.IN_PROGRESS )
 
     def on_enter(self, incident, context, now):
         incident.verified_at = now
