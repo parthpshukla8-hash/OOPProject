@@ -1,0 +1,8 @@
+.incident-priority-badge {
+  display: inline-block; padding: 0 6px; border-radius: 3px; font-size: 12px; font-weight: 600;
+  line-height: 18px; border: 1px solid currentColor; font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.incident-priority-badge--critical { color: var(--color-priority-critical); }
+.incident-priority-badge--high { color: var(--color-priority-high); }
+.incident-priority-badge--medium { color: var(--color-priority-medium); }
+.incident-priority-badge--low { color: var(--color-priority-low); }

@@ -1,0 +1,18 @@
+.service-map-page { padding: 32px 40px; display: flex; flex-direction: column; gap: 20px; }
+.service-map-page h1 { margin: 0 0 6px; font-size: 24px; font-weight: 600; }
+.service-map-page__lead { margin: 0; font-size: 13px; color: var(--colorNeutralForeground3); max-width: 62ch; line-height: 1.5; }
+.service-map-page__layout { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 32px; align-items: start; }
+.service-map-page__canvas { overflow: auto; color: var(--colorNeutralForeground3); }
+.service-map-page__edge { color: var(--colorNeutralForeground3); }
+.service-map-page__node { cursor: pointer; }
+.service-map-page__node-box { fill: var(--colorNeutralBackground1); stroke: var(--colorNeutralStroke2); }
+.service-map-page__node:focus-visible .service-map-page__node-box { stroke: var(--colorStrokeFocus2); stroke-width: 2; }
+.service-map-page__node-name { font-size: 13px; font-weight: 600; fill: var(--colorNeutralForeground1); }
+.service-map-page__node-meta { font-size: 11px; fill: var(--colorNeutralForeground3); }
+.service-map-page__node--healthy .service-map-page__node-mark { fill: var(--color-health-healthy); }
+.service-map-page__node--degraded .service-map-page__node-mark { fill: var(--color-health-degraded); }
+.service-map-page__node--down .service-map-page__node-mark { fill: var(--color-health-down); }
+.service-map-page__detail { font-size: 14px; line-height: 1.5; }
+.service-map-page__detail h2 { margin: 0 0 6px; font-size: 16px; }
+.service-map-page__detail p { margin: 0 0 8px; }
+@media (max-width: 900px) { .service-map-page { padding: 20px; } .service-map-page__layout { grid-template-columns: 1fr; } }

@@ -1,0 +1,34 @@
+/* Tokens that carry meaning (priority, SLA, health). Named by role, not by colour. */
+:root {
+  --color-priority-critical: #b42318;
+  --color-priority-high: #b54708;
+  --color-priority-medium: #3b6a94;
+  --color-priority-low: #8a96a4;
+  --color-sla-on-track: #2e7d5b;
+  --color-sla-at-risk: #b54708;
+  --color-sla-breached: #b42318;
+  --color-sla-met: #2e7d5b;
+  --color-health-healthy: #2e7d5b;
+  --color-health-degraded: #b54708;
+  --color-health-down: #b42318;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+}
+
+[data-theme='dark'] {
+  --color-priority-critical: #f97066;
+  --color-priority-high: #f79009;
+  --color-priority-medium: #7fa6cc;
+  --color-priority-low: #8996a4;
+  --color-sla-on-track: #5fbf94;
+  --color-sla-at-risk: #f79009;
+  --color-sla-breached: #f97066;
+  --color-sla-met: #5fbf94;
+  --color-health-healthy: #5fbf94;
+  --color-health-degraded: #f79009;
+  --color-health-down: #f97066;
+}
