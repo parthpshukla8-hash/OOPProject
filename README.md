@@ -36,8 +36,6 @@ API endpoints require authentication. Login issues a token that rotates on each 
 
 For deployments, leave `DJANGO_DEBUG` unset or set it to `false`, provide a unique `DJANGO_SECRET_KEY`, and set `DJANGO_ALLOWED_HOSTS` to a comma-separated list of the deployment's hostnames. The demo seed command refuses to run when `DEBUG` is disabled.
 
-## What is new in this version
-
 ### 1. Cosine similarity everywhere text is compared (`backend/itsm/similarity.py`)
 TF-IDF vectors (unigrams + bigrams, light stemming, an incident-language synonym map so "unavailable", "down" and "outage" count as one idea) compared with cosine similarity. Pure Python, no ML dependency.
 
